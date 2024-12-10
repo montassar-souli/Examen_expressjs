@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1 id="welcome">Hello</h1>
+  <label>Message : </label>
+  <input type="text" id="message">
+  <input type="button" value="Send" onclick="send()">
+  <script> 
+    const username = prompt('Enter your name');
+    document.getElementById("welcome").innerHTML = "Hello " + username;
+   
+    const socket = io.connect('http://localhost:3000',{ query : {username:username} });
+
+    socket.on("msg",(data)=>{
+      const paragraph = document.createElement("p");
+      paragraph.innerHTML = data;
+      document.body.append(paragraph);
+    });
+
+    function send(){
+      let message = document.getElementById("message");
+      socket.emit("msg", message.value);
+    }
+    document.getElementById('message').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        send();
+    }});
+
+
+  </script>
+</body>
+</html>

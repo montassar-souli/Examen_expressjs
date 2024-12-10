@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+</head>
+<body>
+  <div id="chat-container">
+    <ul id="messages"></ul>
+
+
+    
+    <input id="username" type="text" placeholder="Username">
+    <input id="message" type="text" placeholder="Message">
+
+
+    <button id="send">Send</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const messagesContainer = document.getElementById('messages');
+  const usernameInput = document.getElementById('username');
+  const messageInput = document.getElementById('message');
+  const sendButton = document.getElementById('send');
+
+  // Load existing messages
+  socket.on('load_messages', (messages) => {
+    messages.forEach(({ username, messages }) => {
+      const li = document.createElement('li');
+      li.textContent = `${username}: ${messages}`;
+      messagesContainer.appendChild(li);
+    });
+  });
+
+  // Listen for new messages
+  socket.on('new_message', ({ username, messages }) => {
+    const li = document.createElement('li');
+    li.textContent = `${username}: ${messages}`;
+    messagesContainer.appendChild(li);
+  });
+
+  // Send a new message
+  sendButton.addEventListener('click', () => {
+    const username = usernameInput.value;
+    const messages = messageInput.value;
+
+    if (username && messages) {
+      socket.emit('new_message', { username, messages });
+      messageInput.value = '';
+    } else {
+      alert('Username and message are required!');
+    }
+  });
+</script>
+
+</body>
+</html>
