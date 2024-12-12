@@ -54,37 +54,30 @@ io.on('connection', (socket) => {
   Chat.find().then(messages => {
     socket.emit('load_messages', messages);
   });
-
   // Listen for new messages
   socket.on('new_message', (data) => {
     const { messages } = data;
-
     // Save message to database
     const message = new Chat({ username, messages });
     message.save().then(() => {
       // Broadcast the message to all connected users
-      io.emit('new_message', { username, messages }); // Ensure the broadcasted message includes username and messages
+      io.emit('new_message', { username, messages }); 
     }).catch(err => console.error(err));
   });
-
   // Handle disconnection
   socket.on('disconnect', () => {
     io.emit("new_connection", username + " disconnected");
   });
 });
 
+// Start the server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
-
+//index
 app.get("/", (req, res) => {
   res.render("index");
 });
-
-app.get("/chat", (req, res) => {
-  res.render("chat");
-});
-
 
 mongoose.connect(configDb.mongo.url);

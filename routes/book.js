@@ -53,7 +53,7 @@ router.put("/buyWithDiscount/:id", async function (req, res, next) {
 
 router.get('/availableBooks', async (req, res,next) => {
   try {
-    const availableBooks = await Book.countDocuments({available:true})
+    const availableBooks = await Book.find({available:true})
     res.json({ count: availableBooks });
   } catch (error) {
     res.json({ message: 'Erreur de reception book', error });
