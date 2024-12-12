@@ -60,5 +60,9 @@ router.get('/availableBooks', async (req, res,next) => {
   }
 })
 
+router.get("/getAvailableBooks", (req, res,next) => {
+  res.render("books");
+});
+
 
 module.exports = router;

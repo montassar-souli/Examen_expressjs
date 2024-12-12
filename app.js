@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
   });
 });
 
-//Chat1
+//Chat
 // io.on("connection", (socket) => {
 //   const username = socket.handshake.query.username;  
 //   io.emit("msg", username + " is connected");
@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
 //   });
 // });
 
-//Chat2
+//Chat with bd
 io.on('connection', (socket) => {
   console.log('A user connected');
   const username = socket.handshake.query.username;
@@ -81,14 +81,10 @@ server.listen(PORT, () => {
 app.get("/", (req, res) => {
   res.render("index");
 });
-app.get("/getAvailableBooks", (req, res) => {
-  res.render("books");
-});
+
 app.get("/chat", (req, res) => {
   res.render("chat");
 });
-app.get("/chatdb", (req, res) => {
-  res.render("chatdb");
-});
+
 
 mongoose.connect(configDb.mongo.url);

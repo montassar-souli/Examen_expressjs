@@ -12,4 +12,8 @@ router.get("/", async (req, res) => {
   res.json(chat);
 });
 
+router.get("/chatdb", (req, res) => {
+  res.render("chatdb");
+});
+
 module.exports = router;
